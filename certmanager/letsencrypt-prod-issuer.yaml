@@ -2,10 +2,10 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: letsencrypt
-  namespace: istio-system
+  namespace: helloworld
 spec:
   acme:
-    email: michael.williamson@phac-aspc.gc.ca
+    email: mike@korora.ca
     preferredChain: ""
     privateKeySecretRef:
       name: letsencrypt-prod
@@ -14,6 +14,6 @@ spec:
     - dns01:
         cloudDNS:
           # The ID of the GCP project
-          project: phsx-sp-sdi-livebrant
+          project: asmautopilotdemo
       selector: {}
 status: {}

@@ -3,3 +3,29 @@ kind: Kustomization
 resources:
 - istio
 - helloworld
+- certmanager
+
+patchesJSON6902:
+# Patch the Istio ingress service so that our IP is used.
+- target:
+    version: v1
+    kind: Service
+    name: istio-ingressgateway
+    namespace: istio-ingress
+  patch: |-
+    - op: add
+      path: /spec/loadBalancerIP
+      value: 34.152.36.147
+# Patch the cert-manager service account so that it uses the workload identity account that
+# has permissions to use Cloud DNS:
+# https://cert-manager.io/docs/configuration/acme/dns01/google/#link-ksa-to-gsa-in-kubernetes
+- target:
+    version: v1
+    kind: ServiceAccount
+    name: cert-manager
+    namespace: cert-manager
+  patch: |-
+    - op: add
+      path: "/metadata/annotations"
+      value:
+        iam.gke.io/gcp-service-account: dns01-solver@asmautopilotdemo.iam.gserviceaccount.com
