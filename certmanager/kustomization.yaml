@@ -1,5 +1,5 @@
-apiVersion: kustomize.config.k8s.io/v1alpha1
-kind: Component
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 # https://github.com/cert-manager/cert-manager/releases/download/v1.10.0/cert-manager.yaml
 
 resources:
@@ -7,7 +7,7 @@ resources:
 - letsencrypt-prod-issuer.yaml
 - letsencrypt-staging-issuer.yaml
 - selfsigned-issuer.yaml
-# - certificate.yaml
+- certificate.yaml
 patchesJSON6902:
 # Add an argument to the cert-manager deployment to enable Workload identity
 # This is needed because cert-manager needs permission to manipulate DNS records
@@ -36,7 +36,7 @@ patchesJSON6902:
     - op: add
       path: "/metadata/annotations"
       value:
-        iam.gke.io/gcp-service-account: dns01-solver@phsx-sp-sdi-livebrant.iam.gserviceaccount.com
+        iam.gke.io/gcp-service-account: dns01-solver@asmautopilotdemo.iam.gserviceaccount.com
 # autopilot compatibility: change leader election namespace. autopilot doesn't allow access to kube-system
 - target:
     group: apps
